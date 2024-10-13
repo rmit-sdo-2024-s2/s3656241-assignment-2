@@ -49,8 +49,9 @@ Stores Terraform state files, ensuring consistent tracking of infrastructure cha
 Helps in state management and versioning for infrastructure deployment.
 
 
-Infrastructure Architecture Diagram:
+## Infrastructure Architecture Diagram
 
+![Infrastructure Architecture](https://github.com/rmit-sdo-2024-s2/s3656241-assignment-2/blob/main/IAD.drawio.png)
 
 
 #### Key data flows

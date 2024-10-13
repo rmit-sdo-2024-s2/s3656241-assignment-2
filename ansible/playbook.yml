@@ -1,0 +1,15 @@
+---
+- name: Configure app server
+  hosts: app_servers
+  remote_user: ubuntu
+  become: yes # sudo
+
+  tasks:
+  - name: Install nginx
+    ansible.builtin.apt:
+      name: nginx
+      state: present
+  - name: Upload content to web site
+    copy:
+      content: yah hello from ansible
+      dest: /var/www/html/index.html

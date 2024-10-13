@@ -11,49 +11,45 @@ The solution uses a combination of Terraform, Ansible, and Docker to deploy the 
 ### Infrastructure
 Infrastructure Breakdown:
 
-- The Foo programme is being run in a Docker container on two EC2 VMs.
-- One PostgreSQL instance operating on a different EC2 instance as a Docker container.
-- Application Load Balancer (ALB) for traffic distribution amongst Foo application instances.
-- SSH, HTTP, and HTTPS network access is managed by security groups.
-- Terraform state management with an S3 bucket.
+Client:
+Represents the end user accessing the Foo web application.
+HTTP traffic (Port 80) flows between the Client and the Application Load Balancer (ALB).
+
+Application Load Balancer (ALB):
+Distributes incoming traffic evenly across the two EC2 instances running the Foo app.
+Ensures high availability and scalability by routing traffic to healthy instances.
+Communicates with EC2 instances on Port 80.
+
+EC2 App Instances:
+Two EC2 instances, each running the Foo application in a Docker container.
+Responsible for processing user requests received from the ALB.
+Communicates with the PostgreSQL database for backend operations.
+
+Components:
+Foo App in Docker container.
+Exposes Port 80 for HTTP traffic.
+
+EC2 Instance-PostgreSQL:
+A dedicated EC2 instance running a PostgreSQL database in a Docker container.
+Handles all database interactions required by the Foo app.
+Port 5432 exposed for internal communication from the EC2 app instances.
+Data initialized using snapshot-prod-data.sql.
+
+Terraform + GitHub Actions Workflow:
+Automates infrastructure setup and configuration.
+Provisions the following resources:
+EC2 instances (App + PostgreSQL)
+Application Load Balancer (ALB)
+Security Groups
+S3 Bucket (for state storage)
+Deploys and configures Docker containers using Ansible playbooks.
+
+S3 Bucket for State Management:
+Stores Terraform state files, ensuring consistent tracking of infrastructure changes.
+Helps in state management and versioning for infrastructure deployment.
+
 
 Infrastructure Architecture Diagram:
-
-┌────────────────────────────────────────────────────────────────────────────────┐
-│                           AWS Cloud Infrastructure                             │
-│ ┌───────────────────────────────────────────────────────────────────────────┐  │
-│ │                     Application Load Balancer (ALB)                       │  │
-│ │                    - Distributes traffic on Port 80                       │  │
-│ └───────────────────────────────────────────────────────────────────────────┘  │
-│                            │                       │                           │
-│        ┌───────────────────┘                       └────────────────┐          │
-│        │                                                            │          │
-│ ┌───────────────────────┐                               ┌────────────────────┐ │
-│ │    EC2 Instance 1     │                               │    EC2 Instance 2  │ │
-│ │ - Foo App in Docker   │                               │ - Foo App in Docker│ │
-│ │ - Port: 80            │                               │ - Port: 80         │ │
-│ └───────────────────────┘                               └────────────────────┘ │
-│              │                                                      │          │
-│              └──────────────────────────────────────────────────────┘          │
-│                         Communicates with PostgreSQL Database                  │
-│                                 via Private Network                            │
-│ ┌───────────────────────────────────────────────────────────────────────────┐  │
-│ │                       EC2 Instance - PostgreSQL                           │  │
-│ │ - PostgreSQL Database in Docker                                           │  │
-│ │ - Port: 5432                                                              │  │
-│ │ - Data initialized with snapshot-prod-data.sql                            │  │
-│ └───────────────────────────────────────────────────────────────────────────┘  │
-│                                                                                │
-│ ┌───────────────────────────────────────────────────────────────────────────┐  │
-│ │                               S3 Bucket                                   │  │
-│ │ - Stores Terraform state files for infrastructure tracking                │  │
-│ └───────────────────────────────────────────────────────────────────────────┘  │
-│                                                                                │
-│                        Terraform + GitHub Actions Workflow                     │
-│ - Automates infrastructure setup and configuration                             │
-│ - Provisions EC2 instances, ALB, Security Groups, and S3 bucket                │
-│ - Configures servers and deploys containers using Ansible                      │
-└────────────────────────────────────────────────────────────────────────────────┘
 
 
 

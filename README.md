@@ -16,37 +16,34 @@ Represents the end user gaining access to the Foo online application.
 Between the client and the application load balancer (ALB), HTTP traffic (Port 80) is exchanged.
 
 Application Load Balancer (ALB):
-Distributes incoming traffic evenly across the two EC2 instances running the Foo app.
-Ensures high availability and scalability by routing traffic to healthy instances.
-Communicates with EC2 instances on Port 80.
+Equally divides incoming traffic between the two EC2 instances that are hosting the Foo application.
+routes traffic to instances that are in good health, ensuring high availability and scalability.
+uses Port 80 to communicate with EC2 instances.
 
 EC2 App Instances:
-Two EC2 instances, each running the Foo application in a Docker container.
-Responsible for processing user requests received from the ALB.
-Communicates with the PostgreSQL database for backend operations.
+Two Docker-containerized EC2 instances, each executing the Foo programme.
+in charge of handling user requests that come in from the ALB.
+exchanges data with the PostgreSQL database to perform backend tasks.
 
 Components:
 Foo App in Docker container.
-Exposes Port 80 for HTTP traffic.
+Opens Port 80 to HTTP requests.
 
 EC2 Instance-PostgreSQL:
-A dedicated EC2 instance running a PostgreSQL database in a Docker container.
-Handles all database interactions required by the Foo app.
-Port 5432 exposed for internal communication from the EC2 app instances.
-Data initialized using snapshot-prod-data.sql.
+A specific EC2 instance with a Docker container hosting a PostgreSQL database.
+manages all database queries that the Foo programme needs.
+The EC2 app instances' internal communication port is open at port 5432.
+Snapshot-prod-data.sql was used to initialise the data.
 
 Terraform + GitHub Actions Workflow:
-Automates infrastructure setup and configuration.
-Provisions the following resources:
-EC2 instances (App + PostgreSQL)
-Application Load Balancer (ALB)
-Security Groups
-S3 Bucket (for state storage)
-Deploys and configures Docker containers using Ansible playbooks.
+Automates the configuration and setup of infrastructure.
+makes the following resources available:
+Security Groups S3 Bucket (for state storage) Application Load Balancer (ALB) EC2 instances (App + PostgreSQL)
+employs Ansible playbooks to deploy and configure Docker containers.
 
 S3 Bucket for State Management:
-Stores Terraform state files, ensuring consistent tracking of infrastructure changes.
-Helps in state management and versioning for infrastructure deployment.
+Maintains constant tracking of infrastructure modifications by storing Terraform state files.
+Supports versioning and state management for the implementation of infrastructure.
 
 
 ## Infrastructure Architecture Diagram

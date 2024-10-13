@@ -12,8 +12,8 @@ The solution uses a combination of Terraform, Ansible, and Docker to deploy the 
 Infrastructure Breakdown:
 
 Client:
-Represents the end user accessing the Foo web application.
-HTTP traffic (Port 80) flows between the Client and the Application Load Balancer (ALB).
+Represents the end user gaining access to the Foo online application.
+Between the client and the application load balancer (ALB), HTTP traffic (Port 80) is exchanged.
 
 Application Load Balancer (ALB):
 Distributes incoming traffic evenly across the two EC2 instances running the Foo app.
